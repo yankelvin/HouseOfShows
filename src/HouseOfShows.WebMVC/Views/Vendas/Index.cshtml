@@ -1,0 +1,59 @@
+﻿@model IEnumerable<HouseOfShows.WebMVC.Models.Venda>
+
+@{
+    ViewData["Title"] = "Vendas";
+}
+
+<h1>Vendas</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Quantidade de Ingressos
+            </th>
+            <th>
+                Valor Total
+            </th>
+            <th>
+                CPF Cliente
+            </th>
+            <th>
+                Codigo Evento
+            </th>
+            <th>
+                Tipo Ingresso
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.QtdIngresso)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValorTotal)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CpfClienteNavigation.Cpf)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdEventoNavigation.CpfResponsavel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TipoIngressoNavigation.TipoIngresso1)
+            </td>
+            <td>
+                @*<a asp-action="Edit" asp-route-id="@item.IdVenda">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.IdVenda">Details</a> |*@
+                <a asp-action="Delete" asp-route-id="@item.IdVenda">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
