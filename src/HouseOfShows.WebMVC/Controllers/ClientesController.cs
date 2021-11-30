@@ -57,10 +57,18 @@ namespace HouseOfShows.WebMVC.Controllers
         {
             if (ModelState.IsValid)
             {
+                var diferencaAnos = DateTime.Now.Year - cliente.DataNascimento.Year;
+
+                if (diferencaAnos < 18 && !cliente.Idade.HasValue)
+                {
+                    throw new Exception("Cliente menor de idade. Necessário preencher a idade.");
+                }
+
                 _context.Add(cliente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(cliente);
         }
 

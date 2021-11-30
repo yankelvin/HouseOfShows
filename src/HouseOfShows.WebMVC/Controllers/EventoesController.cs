@@ -1,11 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HouseOfShows.WebMVC.Models;
+using HouseOfShows.WebMVC.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using HouseOfShows.WebMVC.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HouseOfShows.WebMVC.Controllers
 {
@@ -18,11 +19,46 @@ namespace HouseOfShows.WebMVC.Controllers
             _context = context;
         }
 
-        // GET: Eventoes
+        [HttpPost]
+        public async Task<IActionResult> ObterRelatorio(DateTime dataInicio, DateTime dataFim)
+        {
+            var houseofshowsContext = _context.Eventos.Include(e => e.CpfResponsavelNavigation).Include(e => e.NomeStatusNavigation);
+            var eventos = await houseofshowsContext.Where(evento => evento.DataEvento >= dataInicio && evento.DataEvento <= dataFim).ToListAsync();
+            var viewModels = ObterRelatorioEventos(eventos);
+
+            return PartialView("ObterRelatorio", viewModels);
+        }
+
         public async Task<IActionResult> Index()
         {
             var houseofshowsContext = _context.Eventos.Include(e => e.CpfResponsavelNavigation).Include(e => e.NomeStatusNavigation);
-            return View(await houseofshowsContext.ToListAsync());
+            var eventos = await houseofshowsContext.ToListAsync();
+            var viewModels = ObterRelatorioEventos(eventos);
+
+            return View(viewModels);
+        }
+
+        private List<EventoViewModel> ObterRelatorioEventos(List<Evento> eventos)
+        {
+            return eventos.Select(evento =>
+            {
+                var eventoViewModel = new EventoViewModel()
+                {
+                    Id = evento.Id,
+                    Nome = evento.Nome,
+                    DataEvento = evento.DataEvento,
+                    CpfResponsavel = evento.CpfResponsavel,
+                    ValorInteira = evento.ValorInteira,
+                    ValorMeia = evento.ValorMeia,
+                    NomeStatus = evento.NomeStatus,
+                    CpfResponsavelNavigation = evento.CpfResponsavelNavigation,
+                    NomeStatusNavigation = evento.NomeStatusNavigation,
+                    Venda = evento.Venda
+                };
+
+                eventoViewModel.TotalVendas = _context.Vendas.Where(venda => venda.IdEvento.Equals(evento.Id)).Sum(venda => venda.ValorTotal);
+                return eventoViewModel;
+            }).ToList();
         }
 
         // GET: Eventoes/Details/5

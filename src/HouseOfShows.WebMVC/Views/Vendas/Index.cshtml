@@ -13,47 +13,48 @@
     <thead>
         <tr>
             <th>
-                Quantidade de Ingressos
-            </th>
-            <th>
-                Valor Total
+                Nome do Evento
             </th>
             <th>
                 CPF Cliente
             </th>
             <th>
-                Codigo Evento
+                Tipo Ingresso
             </th>
             <th>
-                Tipo Ingresso
+                Quantidade de Ingressos
+            </th>
+            <th>
+                Valor Total
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.QtdIngresso)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValorTotal)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CpfClienteNavigation.Cpf)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdEventoNavigation.CpfResponsavel)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TipoIngressoNavigation.TipoIngresso1)
-            </td>
-            <td>
-                @*<a asp-action="Edit" asp-route-id="@item.IdVenda">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.IdVenda">Details</a> |*@
-                <a asp-action="Delete" asp-route-id="@item.IdVenda">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IdEventoNavigation.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CpfClienteNavigation.Cpf)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TipoIngressoNavigation.TipoIngresso1)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.QtdIngresso)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValorTotal)
+                </td>
+                <td>
+                    @*<a asp-action="Edit" asp-route-id="@item.IdVenda">Edit</a> |
+                        <a asp-action="Details" asp-route-id="@item.IdVenda">Details</a> |*@
+                    <a asp-action="Delete" asp-route-id="@item.IdVenda">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
