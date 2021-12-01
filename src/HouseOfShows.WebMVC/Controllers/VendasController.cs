@@ -48,7 +48,7 @@ namespace HouseOfShows.WebMVC.Controllers
         public IActionResult Create()
         {
             ViewData["CpfCliente"] = new SelectList(_context.Clientes, "Cpf", "Cpf");
-            ViewData["IdEvento"] = new SelectList(_context.Eventos, "Id", "CpfResponsavel");
+            ViewData["IdEvento"] = new SelectList(_context.Eventos.Where(evento => evento.NomeStatus == "Vendas Abertas"), "Id", "Nome");
             ViewData["TipoIngresso"] = new SelectList(_context.TipoIngressos, "TipoIngresso1", "TipoIngresso1");
             return View();
         }
@@ -71,7 +71,7 @@ namespace HouseOfShows.WebMVC.Controllers
             }
 
             ViewData["CpfCliente"] = new SelectList(_context.Clientes, "Cpf", "Cpf", venda.CpfCliente);
-            ViewData["IdEvento"] = new SelectList(_context.Eventos, "Id", "CpfResponsavel", venda.IdEvento);
+            ViewData["IdEvento"] = new SelectList(_context.Eventos, "Id", "Id", venda.IdEvento);
             ViewData["TipoIngresso"] = new SelectList(_context.TipoIngressos, "TipoIngresso1", "TipoIngresso1", venda.TipoIngresso);
 
             return View(venda);
